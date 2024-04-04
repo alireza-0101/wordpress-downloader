@@ -9,6 +9,7 @@
 ## Options:
 
 You can give en or fa lang params to download english or persian mode (Default: 'fa')
+
 examle: https://domain.com?lang=en
 
 ## Notes:
