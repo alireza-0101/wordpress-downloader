@@ -46,8 +46,36 @@ fclose($fp);
 
 if ($statusCode == 200) {
 
-    echo "Finish";
+    // Extract the downloaded ZIP file
+    $zip = new ZipArchive;
+    $res = $zip->open('wordpress.zip');
 
+    if ($res === TRUE) {
+        $zip->extractTo('./'); // Extract to the current directory
+        $zip->close();
+        // echo '✔ Extracted!';
+
+        // Remove the ZIP file
+        unlink('wordpress.zip');
+
+
+        // Move files to public_html root
+        $files = scandir('./wordpress');
+        foreach ($files as $file) {
+            if ($file != '.' && $file != '..') {
+                rename('./wordpress/' . $file, './' . $file);
+            }
+        }
+
+        // Remove the empty wordpress folder
+        rmdir('./wordpress');
+
+        // Refresh the page
+        echo '<meta http-equiv="refresh" content="0">';
+
+    } else {
+        echo '❌ Extraction failed';
+    }
 } else {
     echo "❌ Status Code: " . $statusCode;
 }
